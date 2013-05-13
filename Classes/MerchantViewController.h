@@ -30,9 +30,6 @@
     IBOutlet UITextField *item;
     IBOutlet UITextField *discount;
     IBOutlet UILabel *expiration;
-    IBOutlet UITextField *offer;
-    
-    IBOutlet UITableView *tableView;
     
     IBOutlet TDDatePickerController* datePickerView;
     
@@ -40,13 +37,7 @@
     NSString *message;
     
     NSDate* selectedDate;
-    
-    IBOutlet UIScrollView *scrollView;
-    
-    UITextField *loginId; 
 }
-
-@property (nonatomic, retain) UIScrollView *scrollView;
 
 @property (nonatomic, retain) PromotionViewController *viewpromo;
 
@@ -60,7 +51,6 @@
 @property (nonatomic, retain) IBOutlet UITextField *item;
 @property (nonatomic, retain) IBOutlet UITextField *discount;
 @property (nonatomic, retain) IBOutlet UILabel *expiration;
-@property (nonatomic, retain) IBOutlet UITextField *offer;
 
 
 - (IBAction) frequent;

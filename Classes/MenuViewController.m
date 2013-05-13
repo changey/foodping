@@ -28,8 +28,7 @@
     
     User2 *user=[User2 sharedUser];
     
-  // @"http://api.locu.com/v1_0/menu_item/search/?street_address=300%20East%20Alameda%20Ave.&api_key=19e8f68708daef4c1a6f686e60259c41c7b7f6bd"
-   /* NSString *url3 = [NSString stringWithFormat:@"http://api.locu.com/v1_0/menu_item/search/?street_address=300 East Alameda Ave.&api_key=19e8f68708daef4c1a6f686e60259c41c7b7f6bd"];  // server name does not match
+    NSString *url3 = [NSString stringWithFormat:@"http://api.locu.com/v1_0/menu_item/search/?street_address=300 East Alameda Ave.&api_key=19e8f68708daef4c1a6f686e60259c41c7b7f6bd"];  // server name does not match
     NSURL *URL3 = [NSURL URLWithString:url3];
     
     ASIHTTPRequest *request3 = [ASIHTTPRequest requestWithURL:URL3];
@@ -43,7 +42,7 @@
     
     NSString *calibrated3 = [returnString3 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
     
-    NSLog(@"the return string: %@", calibrated3);*/
+    NSLog(@"the return string: %@", calibrated3);
     
     NSString *url = [NSString stringWithFormat:@"%@/menus_cat.php",user.url];  // server name does not match
     NSURL *URL = [NSURL URLWithString:url];
@@ -59,7 +58,7 @@
     
     NSString *calibrated = [returnString stringByReplacingOccurrencesOfString:@"_" withString:@" "];
     
- //    NSLog(@"the return string: %@", calibrated);
+    // NSLog(@"the return string: %@", calibrated);
     
     NSDictionary *json = [calibrated JSONValue];
     
@@ -76,7 +75,7 @@
     for (int i=0; i<length;i++){
         NSString *merchant=[[items2 objectAtIndex:i] objectForKey:@"merchant"];
         //  NSLog(@"merchant=%@",merchant);
-        //  NSLog(@"merchant_section=%@",user.merchant_section);
+          NSLog(@"merchant_section=%@",user.merchant_section);
         NSString *section=[NSString stringWithFormat:@"%@", user.merchant_section];
        // if([merchant isEqualToString:section]){
         if([merchant isEqualToString:section]){

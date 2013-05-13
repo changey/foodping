@@ -11,6 +11,7 @@
 #import "User2.h"
 #import "Parse/Parse.h"
 #import "ASIHTTPRequest.h"
+#import <SinglySDK/SinglySDK.h>
 
 @interface NSURLRequest (DummyInterface)
 //+ (BOOL)allowsAnyHTTPSCertificateForHost:(NSString*)host;
@@ -31,16 +32,38 @@
 @synthesize receivedData,responseData,user,pass,received;
 @synthesize viewcus, viewmer, merchant_id, viewsign, imageView, welcomePhotos, viewmerdis, fbGraph, responseString;
 
+-(IBAction)gconnect{
+    SinglyService *service=[SinglyService serviceWithIdentifier:@"google"];
+    service.delegate=self;
+    [service requestAuthorizationWithViewController:self];
+   
+}
+
 -(IBAction)fbconnect{
+    
+   /* if(self.viewcus == nil) {
+        Customer2ViewController *secondxib =
+        [[Customer2ViewController alloc] initWithNibName:@"Customer2ViewController" bundle:[NSBundle mainBundle]];
+        self.viewcus = secondxib;
+        [secondxib release];
+    }
+    
+    [self.navigationController pushViewController:self.viewcus animated:YES];*/
+    
+    SinglyService *service=[SinglyService serviceWithIdentifier:@"facebook"];
+    service.delegate=self;
+    [service requestAuthorizationWithViewController:self];
+    
+    
     /*Facebook Application ID*/
-	NSString *client_id = @"303431939770587";
+	/*NSString *client_id = @"303431939770587";
 	
 	//alloc and initalize our FbGraph instance
 	self.fbGraph = [[FbGraph alloc] initWithFbClientID:client_id];
 	
 	//begin the authentication process.....
 	[fbGraph authenticateUserWithCallbackObject:self andSelector:@selector(fbGraphCallback:)
-						 andExtendedPermissions:@"user_photos,user_videos,publish_stream,offline_access,user_checkins,friends_checkins"];
+						 andExtendedPermissions:@"user_photos,user_videos,publish_stream,offline_access,user_checkins,friends_checkins"];*/
 	
 	/**
 	 * OR you may wish to 'anchor' the login UIWebView to a window not at the root of your application...
@@ -49,6 +72,31 @@
 	 * Feel free to try both methods here, simply (un)comment out the appropriate one.....
 	 **/
 	//	[fbGraph authenticateUserWithCallbackObject:self andSelector:@selector(fbGraphCallback:) andExtendedPermissions:@"user_photos,user_videos,publish_stream,offline_access" andSuperView:self.view];
+}
+
+- (void)singlyServiceDidAuthorize:(SinglyService *)service
+{
+    User2 *user =[User2 sharedUser];
+    user.user=@"";
+    user.pass=@"";
+    user.pass=@"1";
+    
+    user.url=@"https://54.243.144.241";
+    if(self.viewcus == nil) {
+        Customer2ViewController *secondxib =
+        [[Customer2ViewController alloc] initWithNibName:@"Customer2ViewController" bundle:[NSBundle mainBundle]];
+        self.viewcus = secondxib;
+        [secondxib release];
+    }
+    
+    [self.navigationController pushViewController:self.viewcus animated:YES];
+    NSLog(@"Authorized with %@", service.serviceIdentifier);
+}
+
+- (void)singlyServiceDidFail:(SinglyService *)service withError:(NSError *)error
+{
+    NSLog(@"Failed to authorize service %@", service.serviceIdentifier);
+    NSLog(@"Error: %@", error);
 }
 
 #pragma mark -
@@ -197,7 +245,7 @@
     user.pass=pass2;
     
     if([returnString isEqualToString:@"0"]){
-      //  if([user2 isEqualToString:@"test"]){
+    //        if([user2 isEqualToString:@"test"]){
         
         if(self.viewcus == nil) {
             Customer2ViewController *secondxib =
@@ -244,30 +292,33 @@
     
     [pass resignFirstResponder];
     User2 *user=[User2 sharedUser];
-
+    
+    
+    // NSString *urlString = [NSString stringWithFormat:@"https://54.243.144.241/rnlogin2.php?user=%@&pass=%@",user2,pass2];
+   // user.url=@"http://107.22.99.26";
     user.url=@"https://54.243.144.241";
     
     NSString *url = [NSString stringWithFormat:@"%@/rnlogin2.php?user=%@&pass=%@",user.url,user2,pass2];  // server name does not match
     
     
     NSURL *URL = [NSURL URLWithString:url];
-//
-//  //  __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:URL];
-//   // request = [ASIHTTPRequest requestWithURL:URL];
-//    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:URL];
-//    [request startSynchronous];
-//    NSError *error = [request error];
-//    NSString *response;
-//    if (!error) {
-//        response = [request responseString];
-//        NSLog(@"%@",response);
-//    }
+    
+  //  __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:URL];
+   // request = [ASIHTTPRequest requestWithURL:URL];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:URL];
+    [request startSynchronous];
+    NSError *error = [request error];
+    NSString *response;
+    if (!error) {
+        response = [request responseString];
+        NSLog(@"%@",response);
+    }
     
     user.user=user2;
     user.pass=pass2;
     
-   // if([response isEqualToString:@"0"]){
-                if([user2 isEqualToString:@"test"]){
+    if([response isEqualToString:@"0"]){
+        //        if([user2 isEqualToString:@"test"]){
         
         if(self.viewcus == nil) {
             Customer2ViewController *secondxib =
@@ -278,8 +329,8 @@
         
         [self.navigationController pushViewController:self.viewcus animated:YES];
     }
-   // else if([response isEqualToString:@"1"]){
-               else if([user2 isEqualToString:@"test2"]){
+    else if([response isEqualToString:@"1"]){
+        //       else if([user2 isEqualToString:@"test2"]){
         
         if(self.viewmerdis == nil) {
             MerDiscountsViewController *secondxib =
@@ -378,6 +429,76 @@
     NSString *user2=user.text;
     NSString *pass2=pass.text;
     
+   /* NSString *urlString = [NSString stringWithFormat:@"%@",@"https://gsuccessprep.com/cb_rest_api/authenticate_user"];
+    
+    NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
+    [request setURL:[NSURL URLWithString:urlString]];
+    [request setHTTPMethod:@"POST"];
+    
+    NSString *boundary = [NSString stringWithString:@"---------------------------14737809831466499882746641449"];
+    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
+    [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+    
+    NSMutableData *body = [NSMutableData data];
+    
+    //  parameter username
+    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"username\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[user2 dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithString:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    //  parameter username
+    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"password\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[pass2 dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithString:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    // setting the body of the post to the reqeust
+    [request setHTTPBody:body];
+    
+    // now lets make the connection to the web
+    NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    NSString *returnString = [[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding];
+    
+    //  NSLog(@"%@", returnString);
+    
+    NSString *finalString = [returnString stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\""];
+    //NSLog(@"%s - receviedDataAsString: %@", __FUNCTION__, finalString);
+    NSString *cut=[finalString substringWithRange:NSMakeRange(1, finalString.length-2)];
+    // NSLog(@"%s - receviedDataAsString: %@", __FUNCTION__, cut);
+    NSString *added=[NSString stringWithFormat:@"{ \"data\": {%@} }", cut];
+  //  NSLog(@"%s - receviedDataAsString: %@", __FUNCTION__, added);
+    
+    // if(mode==0){
+    
+    NSDictionary *json = [added JSONValue];
+    
+    int auth=0;
+    NSDictionary *item = [json valueForKeyPath:@"data"];
+    NSArray *groups = [item valueForKeyPath:@"groups"];
+    NSArray *person_orgs = [item valueForKeyPath:@"info"];
+    int length_info=[person_orgs count];
+    
+    
+    User2 *user3=[User2 sharedUser];
+    user3.org_names=[[NSMutableArray alloc]init];
+    for(int i=0; i<length_info;i++){
+        [user3.org_names addObject:[[person_orgs objectAtIndex:i] valueForKeyPath:@"org_name"]];
+    }
+    
+    //  NSLog(@"%@", [item objectAtIndex:0]);
+    //BOOL isTheObjectThere = [myArray containsObject: @"my string"];
+    
+    if ([groups containsObject:@"coordinator"]==true){
+        auth=1;
+    }
+    else if ([groups containsObject:@"physician"]==true){
+        auth=2;
+    }
+    else{
+        auth=1;
+    }*/
+    
     int auth=0;
     
     if(auth!=1){
@@ -449,8 +570,8 @@
 - (void)viewDidLoad
 {
     
-    user.text=@"";
-    pass.text=@"";
+    user.text=@"test2";
+    pass.text=@"1";
     [self.navigationController setNavigationBarHidden:YES];
     pass.returnKeyType = UIReturnKeyGo;
     

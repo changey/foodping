@@ -104,6 +104,7 @@
 -(IBAction)signup;
 -(IBAction)signin;
 
--(IBAction)fbconnect;
+-(IBAction)fbconnect:(id)sender;
+-(IBAction)gconnect:(id)sender;
 
 @end

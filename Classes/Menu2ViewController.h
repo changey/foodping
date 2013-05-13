@@ -16,6 +16,7 @@
     NSMutableArray *items;
     NSMutableArray *prices;
     NSMutableArray *categories_i;
+    NSMutableArray *names;
     
     NSMutableArray *numbers;
     NSMutableArray *numbers_a;
@@ -25,6 +26,7 @@
     int l;
 }
 
+@property (nonatomic, retain) NSMutableArray *names;
 
 @property (nonatomic, retain) NSMutableArray *categories;
 

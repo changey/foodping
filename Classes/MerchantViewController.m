@@ -18,9 +18,7 @@
 
 @implementation MerchantViewController
 
-@synthesize item, discount, expiration, merchant_id, message, viewmer, viewfreq, viewmenu, viewpromo, offer;
-
-@synthesize scrollView;
+@synthesize item, discount, expiration, merchant_id, message, viewmer, viewfreq, viewmenu, viewpromo;
 
 -(IBAction)promo{
     if(self.viewpromo == nil) {
@@ -52,7 +50,16 @@
     [super viewWillAppear:animated];
 
     User2 *user=[User2 sharedUser];
-  
+    NSLog(@"%@", user.user);
+    
+ /*   NSString *urlString = [NSString stringWithFormat:@"http://107.21.202.8/merchant_id.php?user=%@",user.user];
+    
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString: urlString]];
+    NSString *returnString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    
+    NSLog(@"the return string: %@", returnString);
+    
+    user.merchant_id=[NSString stringWithFormat:@"%@", returnString];*/
 }
 -(IBAction)send:(id)sender{
     
@@ -86,12 +93,12 @@
     }
     else{
         
-        UIAlertView *alertsuccess = [[UIAlertView alloc] initWithTitle:@"Promotion" message:message
+      /*  UIAlertView *alertsuccess = [[UIAlertView alloc] initWithTitle:@"Promotion" message:message
                                                               delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alertsuccess show];
-        [alertsuccess release];
+        [alertsuccess release];*/
     
-   // [PFPush sendPushMessageToChannelInBackground:@"" withMessage:message];
+    [PFPush sendPushMessageToChannelInBackground:@"" withMessage:message];
     
         User2 *user=[User2 sharedUser];
         
@@ -174,10 +181,10 @@
             NSString *returnString;
             if (!error) {
                 returnString = [request responseString];
-              //  NSLog(@"%@",returnString);
+                NSLog(@"%@",returnString);
             }
             
-          //  NSLog(@"the return string: %@", returnString);
+            NSLog(@"the return string: %@", returnString);
             
             
             break;
@@ -198,18 +205,6 @@
 
 - (void)viewDidLoad
 {
-    //---set the viewable frame of the scroll view---
-   // scrollView.frame = CGRectMake(0, 0, 320, 460);
-    
-    //---set the content size of the scroll view---
-   // [scrollView setContentSize:CGSizeMake(320, 713)];
-    
-    tableView.scrollEnabled = NO;
-    scrollView.contentSize = CGSizeMake(320, 600);
-    
-
-    
-    [scrollView flashScrollIndicators];
   /*  UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithTitle:@"Frequent promotions" style:UIBarButtonItemStyleBordered target:self action:@selector(frequent:)];
 	[self.navigationItem setRightBarButtonItem:addButton];*/
     
@@ -253,7 +248,7 @@
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 4;
+    return 3;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -280,18 +275,6 @@
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
     if(indexPath.row==0){
-     /* loginId = [[UITextField alloc] initWithFrame:CGRectMake(200, 0, 280, 21)];
-        loginId .placeholder = @"e.g. an orange chicken";
-        loginId .autocorrectionType = UITextAutocorrectionTypeNo;
-        [loginId setClearButtonMode:UITextFieldViewModeWhileEditing];
-        cell.accessoryView = loginId ;
-        UITextField *textField = [[UITextField alloc] init];*/
-        // Set a unique tag on each text field
-       /* textField.tag = indexPath.row;
-        textField.placeholder=@"e.g. an orange chicken";
-        cell.accessoryView
-        [cell.contentView addSubview:textField];
-        [textField release];*/
         cell.textLabel.text=@"Item";
     }
     else if(indexPath.row==1){
@@ -299,9 +282,6 @@
     }
     else if(indexPath.row==2){
         cell.textLabel.text=@"Exp";
-    }
-    else if(indexPath.row==3){
-        cell.textLabel.text=@"# of offers";
     }
     //cell
 	

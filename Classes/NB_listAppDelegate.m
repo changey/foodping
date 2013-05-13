@@ -9,7 +9,10 @@
 #import "NB_listAppDelegate.h"
 #import "RootViewController.h"
 #import "Parse/Parse.h"
+#import <SinglySDK/SinglySDK.h>
 
+#define CLIENT_ID @"3d2f5dc4db4245c7d1d4b1a42c9d9ae0"
+#define CLIENT_SECRET @"74141e00d4fba0e9eed2973a6f22eec2"
 
 @implementation NB_listAppDelegate
 
@@ -30,6 +33,22 @@
     
     // Override point for customization after application launch.
     [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound];
+    
+    SinglySession *session = [SinglySession sharedSession];
+    session.clientID = CLIENT_ID;
+    session.clientSecret = CLIENT_SECRET;
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:kSinglyNotificationSessionProfilesUpdated object:self queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+        NSLog(@"**** Profiles were updated");
+    }];
+    
+    [session startSessionWithCompletionHandler:^(BOOL ready) {
+        if (ready)
+        {
+            NSLog(@"Singly Session\n  - Account: %@\n  - Access Token: %@)", session.accountID, session.accessToken);
+        }
+    }];
+
 
     
     

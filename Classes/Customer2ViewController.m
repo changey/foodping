@@ -75,8 +75,7 @@ void UIImageFromURL( NSURL * URL, void (^imageBlock)(UIImage * image), void (^er
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//    return [mer_names count];
-    return 1;
+    return [mer_names count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -122,11 +121,6 @@ void UIImageFromURL( NSURL * URL, void (^imageBlock)(UIImage * image), void (^er
     //cell.imgv.image = [UIImage imageWithData:data];
 	cell.mer_name.text = [NSString stringWithFormat:@"%d. %@",indexPath.row+1, [mer_names objectAtIndex:indexPath.row]];
     cell.mer_address.text = [NSString stringWithFormat:@"%@", [mer_addresses objectAtIndex:indexPath.row]];
-    if (indexPath.row==0){
-        cell.mer_name.text = [NSString stringWithFormat:@"1. Savory Food Truck"];
-        cell.mer_address.text = [NSString stringWithFormat:@"77 Massachusetts Avenue"];
-    }
-    
 	
     return cell;
 }
@@ -139,64 +133,108 @@ void UIImageFromURL( NSURL * URL, void (^imageBlock)(UIImage * image), void (^er
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-//    User2 *user =[User2 sharedUser];
-//    if([user.pass isEqualToString:@"1"]){
-//        label.text=@"Yes";
-//    }
-//    
-//    [super viewWillAppear:animated];
-//    
-//   
-//    
-//    NSString *url = [NSString stringWithFormat:@"%@/merchants_list.php", user.url];  // server name does not match
-//    
-//    NSURL *URL = [NSURL URLWithString:url];
-//    
-//   // [NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[URL host]];
-//    
-//    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:URL];
-//    [request startSynchronous];
-//    NSError *error = [request error];
-//    NSString *returnString;
-//    if (!error) {
-//        returnString = [request responseString];
-//        NSLog(@"%@",returnString);
-//    }
-//    
-//    NSDictionary *json = [returnString JSONValue];
-//    
-//    mer_names = [[NSMutableArray alloc] init];
-//    mer_addresses = [[NSMutableArray alloc] init];
-//    mer_ids = [[NSMutableArray alloc] init];
-//
-//    
-//    NSArray *items = [json valueForKeyPath:@"data"];
-//    
-//    int length = [items count];
-//    
-//   // NSLog(@"%d", length);
-//    
-//    //[arrayNo2 removeAllObjects];
-//    
-//    for (int i=0; i<length;i++){
-//        
-//        
-//        NSString *mer_name=[[items objectAtIndex:i] objectForKey:@"mer_name"];
-//        NSString *mer_address=[[items objectAtIndex:i] objectForKey:@"mer_address"];
-//        NSString *mer_id=[[items objectAtIndex:i] objectForKey:@"mer_id"];
-//        [mer_names addObject:[NSString stringWithFormat:@"%@",mer_name]];
-//        [mer_addresses addObject:[NSString stringWithFormat:@"%@",mer_address]];
-//        [mer_ids addObject:[NSString stringWithFormat:@"%@",mer_id]];
-//        
-//        //   [arrayNo2 addObject:[NSString stringWithFormat:@"%@ %@ %@",first_p, middle_p, last_p]];
-//        //NSLog(@"%@", [arrayNo2 objectAtIndex:0]);
-//    }
+    User2 *user =[User2 sharedUser];
+    if([user.pass isEqualToString:@"1"]){
+        label.text=@"Yes";
+    }
+    
+    [super viewWillAppear:animated];
+    
+    NSString *url2 = [NSString stringWithFormat:@"http://api.locu.com/v1_0/venue/search/?postal_code=02139&api_key=19e8f68708daef4c1a6f686e60259c41c7b7f6bd"];  // server name does not match
+    
+    NSURL *URL2 = [NSURL URLWithString:url2];
+    
+    // [NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[URL host]];
+    
+    
+    
+    
+    
+    NSString *url = [NSString stringWithFormat:@"%@/merchants_list.php", user.url];  // server name does not match
+    
+    NSURL *URL = [NSURL URLWithString:url];
+    
+   // [NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[URL host]];
+    
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:URL];
+    [request startSynchronous];
+    NSError *error = [request error];
+    NSString *returnString;
+    if (!error) {
+        returnString = [request responseString];
+        NSLog(@"%@",returnString);
+    }
+    
+    NSDictionary *json = [returnString JSONValue];
+    
+    mer_names = [[NSMutableArray alloc] init];
+    mer_addresses = [[NSMutableArray alloc] init];
+    mer_ids = [[NSMutableArray alloc] init];
+
+    
+    NSArray *items = [json valueForKeyPath:@"data"];
+    
+    int length = [items count];
+    
+   // NSLog(@"%d", length);
+    
+    //[arrayNo2 removeAllObjects];
+    
+    for (int i=0; i<length;i++){
+        
+        
+        NSString *mer_name=[[items objectAtIndex:i] objectForKey:@"mer_name"];
+        NSString *mer_address=[[items objectAtIndex:i] objectForKey:@"mer_address"];
+        NSString *mer_id=[[items objectAtIndex:i] objectForKey:@"mer_id"];
+        [mer_names addObject:[NSString stringWithFormat:@"%@",mer_name]];
+        [mer_addresses addObject:[NSString stringWithFormat:@"%@",mer_address]];
+        [mer_ids addObject:[NSString stringWithFormat:@"%@",mer_id]];
+        
+        //   [arrayNo2 addObject:[NSString stringWithFormat:@"%@ %@ %@",first_p, middle_p, last_p]];
+        //NSLog(@"%@", [arrayNo2 objectAtIndex:0]);
+    }
+    
+    ASIHTTPRequest *request2 = [ASIHTTPRequest requestWithURL:URL2];
+    [request2 startSynchronous];
+    NSError *error2 = [request2 error];
+    NSString *returnString2;
+    if (!error2) {
+        returnString2 = [request2 responseString];
+        NSLog(@"%@",returnString2);
+    }
+    
+    NSDictionary *json2 = [returnString2 JSONValue];
+    
+    NSArray *objects=[json2 objectForKey:@"objects"];
+    
+    int length3=[objects count];
+    
+    NSString *name;
+    NSString *address;
+    NSString *locality;
+    NSString *region;
+    NSDictionary *obj;
+    
+    // = [[NSMutableArray alloc] init];
+    
+    //[names removeAllObjects];
+    
+    for (int i=0;i<20;i++){
+        obj=[objects objectAtIndex:i];
+        name=[obj objectForKey:@"name"];
+        address=[obj objectForKey:@"street_address"];
+        locality=[obj objectForKey:@"locality"];
+        region=[obj objectForKey:@"region"];
+        [mer_names addObject:name];
+        [mer_addresses addObject:[NSString stringWithFormat:@"%@, %@, %@",address, locality, region]];
+    }
     
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     User2 *user = [User2 sharedUser];
+    if(indexPath.row==0 || indexPath.row==1){
     user.merchant_section=[mer_ids objectAtIndex:indexPath.row];
     
     if(self.viewdis == nil) {
@@ -207,6 +245,7 @@ void UIImageFromURL( NSURL * URL, void (^imageBlock)(UIImage * image), void (^er
     }
     
     [self.navigationController pushViewController:self.viewdis animated:YES];
+    }
 
    // User *user=[User sharedUser];
    // user.imageNum=[self.mut objectAtIndex:length-indexPath.row-1];

@@ -42,66 +42,66 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-//    [super viewWillAppear:animated];
-//    
-//    User2 *user =[User2 sharedUser];
-//    
-//    NSString *url = [NSString stringWithFormat:@"%@/discounts_list.php", user.url];  // server name does not match
-//    
-//    NSURL *URL = [NSURL URLWithString:url];
-//    
-//    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:URL];
-//    [request startSynchronous];
-//    NSError *error = [request error];
-//    NSString *returnString;
-//    if (!error) {
-//        returnString = [request responseString];
-//        NSLog(@"%@",returnString);
-//    }
-//    
-//    NSString *calibrated = [returnString stringByReplacingOccurrencesOfString:@"_" withString:@" "];
-//    
-//   // NSLog(@"the return string: %@", calibrated);
-//    
-//    NSDictionary *json = [calibrated JSONValue];
-//    
-//    items = [[NSMutableArray alloc] init];
-//    discounts = [[NSMutableArray alloc] init];
-//    expirations = [[NSMutableArray alloc] init];
-//    
-//    [items removeAllObjects];
-//    [discounts removeAllObjects];
-//    [expirations removeAllObjects];
-//    
-//    NSArray *items2 = [json valueForKeyPath:@"data"];
-//    
-//    int length = [items2 count];
-//    
-//    //[arrayNo2 removeAllObjects];
-//    
-//    for (int i=0; i<length;i++){
-//        NSString *merchant=[[items2 objectAtIndex:i] objectForKey:@"merchant"];
-//      //  NSLog(@"merchant=%@",merchant);
-//      //  NSLog(@"merchant_section=%@",user.merchant_section);
-//        NSString *section=[NSString stringWithFormat:@"%@", user.merchant_section];
-//        if([merchant isEqualToString:section]){
-//        
-//        NSString *item=[[items2 objectAtIndex:i] objectForKey:@"item"];
-//        NSString *discount=[[items2 objectAtIndex:i] objectForKey:@"discount"];
-//        NSString *expiration=[[items2 objectAtIndex:i] objectForKey:@"expiration"];
-//        [items addObject:[NSString stringWithFormat:@"%@",item]];
-//        [discounts addObject:[NSString stringWithFormat:@"%@",discount]];
-//        [expirations addObject:[NSString stringWithFormat:@"%@",expiration]];
-//            
-//            NSLog(@"item=%@", item);
-//        }
-//    
-//        [tableView reloadData];
-//        // NSLog(@"%@", first_p);
-//        
-//     //   [arrayNo2 addObject:[NSString stringWithFormat:@"%@ %@ %@",first_p, middle_p, last_p]];
-//        //NSLog(@"%@", [arrayNo2 objectAtIndex:0]);
-//    }
+    [super viewWillAppear:animated];
+    
+    User2 *user =[User2 sharedUser];
+    
+    NSString *url = [NSString stringWithFormat:@"%@/discounts_list.php", user.url];  // server name does not match
+    
+    NSURL *URL = [NSURL URLWithString:url];
+    
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:URL];
+    [request startSynchronous];
+    NSError *error = [request error];
+    NSString *returnString;
+    if (!error) {
+        returnString = [request responseString];
+        NSLog(@"%@",returnString);
+    }
+    
+    NSString *calibrated = [returnString stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+    
+   // NSLog(@"the return string: %@", calibrated);
+    
+    NSDictionary *json = [calibrated JSONValue];
+    
+    items = [[NSMutableArray alloc] init];
+    discounts = [[NSMutableArray alloc] init];
+    expirations = [[NSMutableArray alloc] init];
+    
+    [items removeAllObjects];
+    [discounts removeAllObjects];
+    [expirations removeAllObjects];
+    
+    NSArray *items2 = [json valueForKeyPath:@"data"];
+    
+    int length = [items2 count];
+    
+    //[arrayNo2 removeAllObjects];
+    
+    for (int i=0; i<length;i++){
+        NSString *merchant=[[items2 objectAtIndex:i] objectForKey:@"merchant"];
+      //  NSLog(@"merchant=%@",merchant);
+      //  NSLog(@"merchant_section=%@",user.merchant_section);
+        NSString *section=[NSString stringWithFormat:@"%@", user.merchant_section];
+        if([merchant isEqualToString:section]){
+        
+        NSString *item=[[items2 objectAtIndex:i] objectForKey:@"item"];
+        NSString *discount=[[items2 objectAtIndex:i] objectForKey:@"discount"];
+        NSString *expiration=[[items2 objectAtIndex:i] objectForKey:@"expiration"];
+        [items addObject:[NSString stringWithFormat:@"%@",item]];
+        [discounts addObject:[NSString stringWithFormat:@"%@",discount]];
+        [expirations addObject:[NSString stringWithFormat:@"%@",expiration]];
+            
+            NSLog(@"item=%@", item);
+        }
+    
+        [tableView reloadData];
+        // NSLog(@"%@", first_p);
+        
+     //   [arrayNo2 addObject:[NSString stringWithFormat:@"%@ %@ %@",first_p, middle_p, last_p]];
+        //NSLog(@"%@", [arrayNo2 objectAtIndex:0]);
+    }
 
 }
 
@@ -148,8 +148,7 @@
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    //return [items count];
-    return 1;
+    return [items count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -205,10 +204,6 @@
     //cell.backgroundColor = [UIColor clearColor];
     cell.item.text=[NSString stringWithFormat:@"Buy %@ get %@",[items objectAtIndex:indexPath.row], [discounts objectAtIndex:indexPath.row]];
     cell.expiration.text=[NSString stringWithFormat:@"Expired: %@",[expirations objectAtIndex:indexPath.row]];
-    if (indexPath.row==0){
-        cell.item.text=[NSString stringWithFormat:@"Buy Kungpao chicken get a free spring roll"];
-        cell.expiration.text=[NSString stringWithFormat:@"Expiration time: 4/28/13, 2:00pm"];
-    }
     
    /* cell.textLabel.text=[NSString stringWithFormat:@"Buy %@ get %@",[items objectAtIndex:indexPath.row], [discounts objectAtIndex:indexPath.row]];
     cell.detailTextLabel.text=[NSString stringWithFormat:@"Expired: %@",[expirations objectAtIndex:indexPath.row]];*/
